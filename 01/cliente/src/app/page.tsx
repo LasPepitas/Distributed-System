@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Table,
@@ -20,7 +20,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-
+import {
+  UserService,
+  ProfesorService,
+  CalificacionService,
+} from "@/services/index";
 type Employee = {
   id: number;
   nombre: string;
@@ -48,12 +52,15 @@ type Grade = {
   materia: string;
   calificacion: number;
 };
+const UserServiceApi = new UserService();
+const ProfessorServiceApi = new ProfesorService();
+const CalificacionServiceApi = new CalificacionService();
 
 export default function Component() {
   const [employees, setEmployees] = useState<Employee[]>([
     {
       id: 1,
-      nombre: "Juan",
+      nombre: "TESTE",
       apellido: "Perez",
       email: "juan.perez@example.com",
       telefono: "123456789",
@@ -168,17 +175,33 @@ export default function Component() {
     calificacion: 0,
   });
 
-  const handleAddEmployee = () => {
+  useEffect(() => {
+    async function fetchData() {
+      // const users = await UserServiceApi.getUsers();
+      const professors = await ProfessorServiceApi.getProfessors();
+      // const grades = await CalificacionServiceApi.getCalificaciones();
+      console.log(professors);
+      setEmployees(professors);
+      // console.log(grades);
+      // setGrades(grades);
+      // console.log(users);
+    }
+
+    fetchData();
+  }, []);
+
+  const handleAddEmployee = async () => {
     setEmployees([...employees, { ...newEmployee, id: employees.length + 1 }]);
-    setNewEmployee({
-      id: 0,
-      nombre: "",
-      apellido: "",
-      email: "",
-      telefono: "",
-      fecha_contratacion: "",
-      departamento_id: 0,
-    });
+    // setNewEmployee({
+    //   id: 0,
+    //   nombre: "",
+    //   apellido: "",
+    //   email: "",
+    //   telefono: "",
+    //   fecha_contratacion: "",
+    //   departamento_id: 0,
+    // });
+    await ProfessorServiceApi.registerProfesor(newEmployee);
   };
 
   const handleAddStudent = () => {
