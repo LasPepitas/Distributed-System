@@ -1,6 +1,11 @@
 # Disable directory browsing
 Options -Indexes
 
+<FilesMatch "\.(php)$">
+    SetHandler application/x-lsphp82
+</FilesMatch>
+
+
 # ----------------------------------------------------------------------
 # Rewrite engine
 # ----------------------------------------------------------------------
