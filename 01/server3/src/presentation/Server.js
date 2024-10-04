@@ -1,21 +1,4 @@
 import express from 'express'
-import mysql from 'mysql2/promise'
-export const connection = await mysql.createConnection({
-    host: '192.250.227.17',
-    user: 'endogast_vic',
-    database: 'endogast_system',
-    password: 'fRLRo!=&cl$e'
-})
-
-// test connection
-
-connection.connect((err) => {
-    if (err) {
-        console.log(err)
-        return
-    }
-    console.log('Connected to MySQL')
-})
 export class Server {
     app = express()
     port

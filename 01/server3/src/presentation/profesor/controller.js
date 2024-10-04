@@ -1,4 +1,4 @@
-import { connection } from '../Server.js'
+import { pool } from '../../config/db.js'
 
 export class ProfesorController {
     constructor() {}
@@ -27,7 +27,7 @@ export class ProfesorController {
             ]
 
             // Usa await para esperar la resolución de la promesa
-            await connection.query(query, values)
+            await pool.query(query, values)
             res.json({ message: 'Profesor registrado' })
         } catch (error) {
             console.error(error)
@@ -40,7 +40,7 @@ export class ProfesorController {
             const query = 'SELECT * FROM profesores'
 
             // Asegúrate de usar await y que devuelva las filas correctamente
-            const [rows] = await connection.query(query)
+            const [rows] = await pool.query(query)
 
             // Verifica que las filas realmente sean un array
             if (!rows || !Array.isArray(rows)) {
@@ -60,7 +60,7 @@ export class ProfesorController {
             const query = 'SELECT * FROM profesores WHERE id = ?'
 
             // Usa await para esperar la resolución de la promesa
-            const [rows] = await connection.query(query, [id])
+            const [rows] = await pool.query(query, [id])
             res.json(rows)
         } catch (error) {
             console.error(error)
@@ -93,7 +93,7 @@ export class ProfesorController {
             ]
 
             // Usa await para esperar la resolución de la promesa
-            await connection.query(query, values)
+            await pool.query(query, values)
             res.json({ message: 'Profesor actualizado' })
         } catch (error) {
             console.error(error)
@@ -107,7 +107,7 @@ export class ProfesorController {
             const query = 'DELETE FROM profesores WHERE id = ?'
 
             // Usa await para esperar la resolución de la promesa
-            await connection.query(query, [id])
+            await pool.query(query, [id])
             res.json({ message: 'Profesor eliminado' })
         } catch (error) {
             console.error(error)

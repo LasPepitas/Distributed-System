@@ -1,6 +1,5 @@
 import { Router } from 'express'
 import { ProfesorController } from './controller.js'
-import { connection } from '../Server.js'
 export class ProfesorRoutes {
     static get routes() {
         const router = Router()
