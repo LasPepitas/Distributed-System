@@ -1,5 +1,5 @@
 const API_SERVER_1 = "http://api-system.endogastropuno.com/users";
-const API_SERVER_2 = "https://distributed-system.onrender.com/api/profesor";
+const API_SERVER_2 = "http://localhost:3000/api/profesor";
 const API_SERVER_3 =
   "https://api-calificaciones.onrender.com/api/calificaciones";
 
@@ -11,11 +11,21 @@ export class UserService {
       headers: {
         "Content-Type": "application/json",
       },
-    });
+    }).then((response) => response.json());
   }
 
   getUsers() {
-    return fetch(`${API_SERVER_1}/list`).then((response) => response.json());
+    return fetch(`${API_SERVER_1}/list`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .catch((error) => {
+        console.error("Fetch error:", error);
+        return [];
+      });
   }
 
   updateUser(id, user) {
@@ -43,7 +53,7 @@ export class ProfesorService {
       headers: {
         "Content-Type": "application/json",
       },
-    });
+    }).then((response) => response.json());
   }
 
   getProfessors() {

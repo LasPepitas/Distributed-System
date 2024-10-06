@@ -57,35 +57,7 @@ const ProfessorServiceApi = new ProfesorService();
 const CalificacionServiceApi = new CalificacionService();
 
 export default function Component() {
-  const [employees, setEmployees] = useState<Employee[]>([
-    {
-      id: 1,
-      nombre: "TESTE",
-      apellido: "Perez",
-      email: "juan.perez@example.com",
-      telefono: "123456789",
-      fecha_contratacion: "2022-01-15",
-      departamento_id: 1,
-    },
-    {
-      id: 2,
-      nombre: "Maria",
-      apellido: "Garcia",
-      email: "maria.garcia@example.com",
-      telefono: "987654321",
-      fecha_contratacion: "2021-11-01",
-      departamento_id: 2,
-    },
-    {
-      id: 3,
-      nombre: "Carlos",
-      apellido: "Rodriguez",
-      email: "carlos.rodriguez@example.com",
-      telefono: "456789123",
-      fecha_contratacion: "2022-03-22",
-      departamento_id: 1,
-    },
-  ]);
+  const [employees, setEmployees] = useState<Employee[]>([]);
 
   const [students, setStudents] = useState<Student[]>([
     {
@@ -177,31 +149,32 @@ export default function Component() {
 
   useEffect(() => {
     async function fetchData() {
-      // const users = await UserServiceApi.getUsers();
+      const users = await UserServiceApi.getUsers();
       const professors = await ProfessorServiceApi.getProfessors();
-      // const grades = await CalificacionServiceApi.getCalificaciones();
-      console.log(professors);
       setEmployees(professors);
-      // console.log(grades);
-      // setGrades(grades);
-      // console.log(users);
+      console.log(professors);
+      const grades = await CalificacionServiceApi.getCalificaciones();
+      setGrades(grades);
+      console.log(grades);
+      console.log(users);
     }
 
     fetchData();
   }, []);
 
   const handleAddEmployee = async () => {
-    setEmployees([...employees, { ...newEmployee, id: employees.length + 1 }]);
-    // setNewEmployee({
-    //   id: 0,
-    //   nombre: "",
-    //   apellido: "",
-    //   email: "",
-    //   telefono: "",
-    //   fecha_contratacion: "",
-    //   departamento_id: 0,
-    // });
-    await ProfessorServiceApi.registerProfesor(newEmployee);
+    const { data } = await ProfessorServiceApi.registerProfesor(newEmployee);
+    setEmployees([...employees, data]);
+    console.log(data);
+    setNewEmployee({
+      id: 0,
+      nombre: "",
+      apellido: "",
+      email: "",
+      telefono: "",
+      fecha_contratacion: "",
+      departamento_id: 0,
+    });
   };
 
   const handleAddStudent = () => {
@@ -228,7 +201,8 @@ export default function Component() {
     });
   };
 
-  const handleDeleteEmployee = (id: number) => {
+  const handleDeleteEmployee = async (id: number) => {
+    await ProfessorServiceApi.deleteProfesor(id);
     setEmployees(employees.filter((emp) => emp.id !== id));
   };
 
@@ -368,6 +342,11 @@ export default function Component() {
               </TableRow>
             </TableHeader>
             <TableBody>
+              {employees.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={8}>No hay datos</TableCell>
+                </TableRow>
+              )}
               {employees.map((employee) => (
                 <TableRow key={employee.id}>
                   <TableCell>{employee.id}</TableCell>
