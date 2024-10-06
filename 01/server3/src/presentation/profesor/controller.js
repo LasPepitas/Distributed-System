@@ -11,8 +11,8 @@ export class ProfesorController {
                 apellido,
                 email,
                 telefono,
-                fechaContratacion,
-                departamentoId
+                fecha_contratacion,
+                departamento_id
             } = req.body
 
             const query =
@@ -22,13 +22,14 @@ export class ProfesorController {
                 apellido,
                 email,
                 telefono,
-                fechaContratacion,
-                departamentoId
+                fecha_contratacion,
+                departamento_id
             ]
 
             // Usa await para esperar la resolución de la promesa
-            await pool.query(query, values)
-            res.json({ message: 'Profesor registrado' })
+            const [result] = await pool.query(query, values)
+            const newUser = { id: result.insertId, ...req.body }
+            res.json({ message: 'Profesor registrado', data: newUser })
         } catch (error) {
             console.error(error)
             res.status(500).json({ error: 'Error al registrar el profesor' })
