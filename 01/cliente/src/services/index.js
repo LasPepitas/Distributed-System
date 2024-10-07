@@ -1,4 +1,4 @@
-const API_SERVER_1 = "http://api-system.endogastropuno.com/users";
+const API_SERVER_1 = "https://api-system.endogastropuno.com/users";
 const API_SERVER_2 = "https://distributed-system.onrender.com/api/profesor";
 const API_SERVER_3 =
   "https://api-calificaciones.onrender.com/api/calificaciones";
