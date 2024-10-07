@@ -105,7 +105,7 @@ export class ProfesorService {
 export class CalificacionService {
   getCalificaciones() {
     try {
-      return fetch(`${API_SERVER_3}/`).then((response) => response.json());
+      return fetch(`${API_SERVER_3}`).then((response) => response.json());
     } catch (error) {
       console.error("Fetch error:", error);
       return [];
