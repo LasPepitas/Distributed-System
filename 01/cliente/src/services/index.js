@@ -5,27 +5,37 @@ const API_SERVER_3 =
 
 export class UserService {
   registerUser(user) {
-    return fetch(`${API_SERVER_1}/add`, {
-      method: "POST",
-      body: JSON.stringify(user),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((response) => response.json());
+    try {
+      return fetch(`${API_SERVER_1}/add`, {
+        method: "POST",
+        body: JSON.stringify(user),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((response) => response.json());
+    } catch (error) {
+      console.error("Fetch error:", error);
+      return [];
+    }
   }
 
   getUsers() {
-    return fetch(`${API_SERVER_1}/list`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .catch((error) => {
-        console.error("Fetch error:", error);
-        return [];
-      });
+    try {
+      return fetch(`${API_SERVER_1}/list`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .catch((error) => {
+          console.error("Fetch error:", error);
+          return [];
+        });
+    } catch (error) {
+      console.error("Fetch error:", error);
+      return [];
+    }
   }
 
   updateUser(id, user) {
@@ -47,17 +57,27 @@ export class UserService {
 
 export class ProfesorService {
   registerProfesor(profesor) {
-    return fetch(`${API_SERVER_2}/`, {
-      method: "POST",
-      body: JSON.stringify(profesor),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((response) => response.json());
+    try {
+      return fetch(`${API_SERVER_2}/`, {
+        method: "POST",
+        body: JSON.stringify(profesor),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((response) => response.json());
+    } catch (error) {
+      console.error("Fetch error:", error);
+      return [];
+    }
   }
 
   getProfessors() {
-    return fetch(`${API_SERVER_2}/`).then((response) => response.json());
+    try {
+      return fetch(`${API_SERVER_2}/`).then((response) => response.json());
+    } catch (error) {
+      console.error("Fetch error:", error);
+      return [];
+    }
   }
 
   updateProfesor(id, profesor) {
@@ -71,14 +91,24 @@ export class ProfesorService {
   }
 
   deleteProfesor(id) {
-    return fetch(`${API_SERVER_2}/${id}`, {
-      method: "DELETE",
-    });
+    try {
+      return fetch(`${API_SERVER_2}/${id}`, {
+        method: "DELETE",
+      });
+    } catch (error) {
+      console.error("Fetch error:", error);
+      return [];
+    }
   }
 }
 
 export class CalificacionService {
   getCalificaciones() {
-    return fetch(`${API_SERVER_3}/`).then((response) => response.json());
+    try {
+      return fetch(`${API_SERVER_3}/`).then((response) => response.json());
+    } catch (error) {
+      console.error("Fetch error:", error);
+      return [];
+    }
   }
 }

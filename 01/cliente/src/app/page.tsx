@@ -149,16 +149,27 @@ export default function Component() {
 
   useEffect(() => {
     async function fetchData() {
-      const users = await UserServiceApi.getUsers();
       const professors = await ProfessorServiceApi.getProfessors();
       setEmployees(professors);
       console.log(professors);
+    }
+    fetchData();
+  }, []);
+  useEffect(() => {
+    async function fetchData() {
+      const users = await UserServiceApi.getUsers();
+      setStudents(users);
+      console.log(users);
+    }
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    async function fetchData() {
       const grades = await CalificacionServiceApi.getCalificaciones();
       setGrades(grades);
       console.log(grades);
-      console.log(users);
     }
-
     fetchData();
   }, []);
 
@@ -342,30 +353,31 @@ export default function Component() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {employees.length === 0 && (
+              {employees.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={8}>No hay datos</TableCell>
                 </TableRow>
+              ) : (
+                employees?.map((employee) => (
+                  <TableRow key={employee.id}>
+                    <TableCell>{employee.id}</TableCell>
+                    <TableCell>{employee.nombre}</TableCell>
+                    <TableCell>{employee.apellido}</TableCell>
+                    <TableCell>{employee.email}</TableCell>
+                    <TableCell>{employee.telefono}</TableCell>
+                    <TableCell>{employee.fecha_contratacion}</TableCell>
+                    <TableCell>{employee.departamento_id}</TableCell>
+                    <TableCell>
+                      <Button
+                        variant="destructive"
+                        onClick={() => handleDeleteEmployee(employee.id)}
+                      >
+                        Delete
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))
               )}
-              {employees.map((employee) => (
-                <TableRow key={employee.id}>
-                  <TableCell>{employee.id}</TableCell>
-                  <TableCell>{employee.nombre}</TableCell>
-                  <TableCell>{employee.apellido}</TableCell>
-                  <TableCell>{employee.email}</TableCell>
-                  <TableCell>{employee.telefono}</TableCell>
-                  <TableCell>{employee.fecha_contratacion}</TableCell>
-                  <TableCell>{employee.departamento_id}</TableCell>
-                  <TableCell>
-                    <Button
-                      variant="destructive"
-                      onClick={() => handleDeleteEmployee(employee.id)}
-                    >
-                      Delete
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
             </TableBody>
           </Table>
         </div>
@@ -508,26 +520,32 @@ export default function Component() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {students.map((student) => (
-                <TableRow key={student.cod_est}>
-                  <TableCell>{student.cod_est}</TableCell>
-                  <TableCell>{student.nombres}</TableCell>
-                  <TableCell>{student.paterno}</TableCell>
-                  <TableCell>{student.materno}</TableCell>
-                  <TableCell>{student.dni}</TableCell>
-                  <TableCell>{student.fecha_nac}</TableCell>
-                  <TableCell>{student.edad}</TableCell>
-                  <TableCell>{student.apodo}</TableCell>
-                  <TableCell>
-                    <Button
-                      variant="destructive"
-                      onClick={() => handleDeleteStudent(student.cod_est)}
-                    >
-                      Delete
-                    </Button>
-                  </TableCell>
+              {students.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={8}>No hay datos</TableCell>
                 </TableRow>
-              ))}
+              ) : (
+                students?.map((student) => (
+                  <TableRow key={student.cod_est}>
+                    <TableCell>{student.cod_est}</TableCell>
+                    <TableCell>{student.nombres}</TableCell>
+                    <TableCell>{student.paterno}</TableCell>
+                    <TableCell>{student.materno}</TableCell>
+                    <TableCell>{student.dni}</TableCell>
+                    <TableCell>{student.fecha_nac}</TableCell>
+                    <TableCell>{student.edad}</TableCell>
+                    <TableCell>{student.apodo}</TableCell>
+                    <TableCell>
+                      <Button
+                        variant="destructive"
+                        onClick={() => handleDeleteStudent(student.cod_est)}
+                      >
+                        Delete
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
             </TableBody>
           </Table>
         </div>
@@ -601,7 +619,7 @@ export default function Component() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {grades.map((grade) => (
+              {grades?.map((grade) => (
                 <TableRow key={grade.id}>
                   <TableCell>{grade.id}</TableCell>
                   <TableCell>{grade.cod_est}</TableCell>
